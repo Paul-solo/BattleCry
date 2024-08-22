@@ -13,5 +13,6 @@ UCLASS()
 class BATTLECRY_API ARTSGameMode : public AGameMode
 {
 	GENERATED_BODY()
-	
+public: 
+	int EnnemyLeft = 0;
 };

@@ -1,7 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "../Battlecry.h"
 #include "AI_Default_Default.h"
+#include "../Battlecry.h"
+#include "RTSGameMode.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AAI_Default_Default::AAI_Default_Default()
@@ -15,7 +17,8 @@ AAI_Default_Default::AAI_Default_Default()
 void AAI_Default_Default::BeginPlay()
 {
 	Super::BeginPlay();
-	//UGameplayStatic::GetGameMode();
+	ARTSGameMode* GameMode = Cast<ARTSGameMode>(UGameplayStatics::GetGameMode(this));
+	GameMode->EnnemyLeft++;
 }
 
 // Called every frame

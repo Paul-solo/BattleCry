@@ -1,5 +1,5 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "../Battlecry.h"
 #include "RTSGameMode.h"
+#include "../Battlecry.h"
 
