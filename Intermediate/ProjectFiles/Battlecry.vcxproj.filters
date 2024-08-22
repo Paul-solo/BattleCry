@@ -11,6 +11,8 @@
     <None Include="..\..\Source\BattlecryEditor.Target.cs">
       <Filter>Source</Filter>
     </None>
+    <None Include="..\..\.gitattributes" />
+    <None Include="..\..\.gitignore" />
     <None Include="..\..\.vsconfig" />
     <Filter Include="Config">
       <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
@@ -46,12 +48,6 @@
       <Filter>Source\Battlecry</Filter>
     </ClCompile>
     <ClInclude Include="..\..\Source\Battlecry\MyActor.h">
-      <Filter>Source\Battlecry</Filter>
-    </ClInclude>
-    <ClCompile Include="..\..\Source\Battlecry\Spawner.cpp">
-      <Filter>Source\Battlecry</Filter>
-    </ClCompile>
-    <ClInclude Include="..\..\Source\Battlecry\Spawner.h">
       <Filter>Source\Battlecry</Filter>
     </ClInclude>
   </ItemGroup>

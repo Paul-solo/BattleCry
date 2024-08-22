@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "j0OFGDP67XKxwcZ9A8sMGPtY0dmatESjn29kfBxIUvKpRZs9eCVbO0KtdskY3nHoybc8mV5M8xeSLWeQkL8syw==",
+  "dgSpecHash": "U2mPrsXf/5g=",
   "success": true,
-  "projectFilePath": "C:\\Users\\paula\\Documents\\Unreal Projects\\Battlecry\\Intermediate\\Build\\BuildRulesProjects\\BattlecryModuleRules\\BattlecryModuleRules.csproj",
+  "projectFilePath": "C:\\Users\\paula\\Documents\\programering\\BattleCry\\Intermediate\\Build\\BuildRulesProjects\\BattlecryModuleRules\\BattlecryModuleRules.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\paula\\.nuget\\packages\\blake3\\0.5.1\\blake3.0.5.1.nupkg.sha512",
     "C:\\Users\\paula\\.nuget\\packages\\humanizer.core\\2.2.0\\humanizer.core.2.2.0.nupkg.sha512",
