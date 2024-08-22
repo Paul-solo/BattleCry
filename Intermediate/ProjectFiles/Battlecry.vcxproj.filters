@@ -50,5 +50,23 @@
     <ClInclude Include="..\..\Source\Battlecry\MyActor.h">
       <Filter>Source\Battlecry</Filter>
     </ClInclude>
+    <Filter Include="Source\Battlecry\Private">
+      <UniqueIdentifier>{1B64B8E1-7140-3DBD-86F1-721789442CFA}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\Battlecry\Private\AI_Default_Default.cpp">
+      <Filter>Source\Battlecry\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Battlecry\Private\RTSGameMode.cpp">
+      <Filter>Source\Battlecry\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\Battlecry\Public">
+      <UniqueIdentifier>{2DE4EC12-1FD4-3081-8010-9254AB3D20DA}</UniqueIdentifier>
+    </Filter>
+    <ClInclude Include="..\..\Source\Battlecry\Public\AI_Default_Default.h">
+      <Filter>Source\Battlecry\Public</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Battlecry\Public\RTSGameMode.h">
+      <Filter>Source\Battlecry\Public</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

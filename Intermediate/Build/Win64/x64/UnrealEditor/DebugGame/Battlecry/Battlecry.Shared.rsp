@@ -1,4 +1,5 @@
 /I "."
+/I "C:\Users\paula\Documents\programering\BattleCry\Source\Battlecry\Private"
 /I "..\Intermediate\Build\Win64\UnrealEditor\Inc\Engine\UHT"
 /I "..\Shaders\Shared"
 /I "Runtime\Engine\Classes"
@@ -256,7 +257,9 @@
 /I "Developer\PhysicsUtilities\Public"
 /I "..\Intermediate\Build\Win64\UnrealEditor\Inc\WidgetRegistration\UHT"
 /I "Developer\WidgetRegistration\Public"
+/I "C:\Users\paula\Documents\programering\BattleCry\Intermediate\Build\Win64\UnrealEditor\Inc\Battlecry\UHT"
 /I "C:\Users\paula\Documents\programering\BattleCry\Source"
+/I "C:\Users\paula\Documents\programering\BattleCry\Source\Battlecry\Public"
 /external:W0
 /external:I "ThirdParty\mimalloc\include"
 /external:I "ThirdParty\LibTiff\Source\Win64"
