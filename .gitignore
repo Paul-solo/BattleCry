@@ -1,4 +1,10 @@
+# Unreal specific
 *.vs
+Binaries
+Intermediate
+Saved
+windows
+
 # Prerequisites
 *.d
 
