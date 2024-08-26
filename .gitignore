@@ -4,6 +4,7 @@ Binaries
 Intermediate
 Saved
 windows
+.vsconfig
 
 # Prerequisites
 *.d
