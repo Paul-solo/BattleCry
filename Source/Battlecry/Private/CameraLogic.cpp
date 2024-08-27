@@ -13,7 +13,10 @@ ACameraLogic::ACameraLogic()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 	
+	// For collisions to work, the root component must be the collision box
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(FName("Collision Mesh"));
+	RootComponent = CollisionBox;
+
 	CameraMain = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CameraMain->SetupAttachment(CollisionBox);
 }
@@ -24,7 +27,7 @@ void ACameraLogic::BeginPlay()
 	Super::BeginPlay();
 	
 	// Enhanced Input Input Mapping Controller (IMC) Setup for The Castle Main Game Character Harker
-	APlayerController* PlayerController = Cast<APlayerController>(GetController());
+	PlayerController = Cast<APlayerController>(GetController());
 
 	if (PlayerController)
 	{
@@ -41,15 +44,28 @@ void ACameraLogic::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	const FVector ForwardDirection = GetActorForwardVector() * MovementVector.Y;
+	const FVector RightDirection = GetActorRightVector() * MovementVector.X;
+
+	FVector MoveDirection = FVector(ForwardDirection.X + RightDirection.X, ForwardDirection.Y + RightDirection.Y, CameraElevation * CameraVerticalSpeed);
+	MoveDirection /= MoveDirection.Size();
+
+	const FVector2D LookDelta = LookVector * DeltaTime * MovementSpeed;
+
+	const float MinimumHeight = 100.0f;
+
+	if (GetActorLocation().Z < MinimumHeight)
+	{
+		SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, MinimumHeight));
+	}
+
+	SetActorLocation(GetActorLocation() + (MoveDirection * DeltaTime * MovementSpeed));
+
 	if (isPanning)
 	{
-		const FVector ForwardDirection = GetActorForwardVector() * MovementVector.Y;
-		const FVector RightDirection   = GetActorRightVector()   * MovementVector.X;
-		
-		FVector MoveDirection = FVector(ForwardDirection.X + RightDirection.X, ForwardDirection.Y + RightDirection.Y, CameraElevation * CameraVerticalSpeed);
-		MoveDirection /= MoveDirection.Size();
-
-		const FVector2D LookDelta = LookVector * DeltaTime * MovementSpeed;
+		PlayerController->bShowMouseCursor = false;
+		PlayerController->bEnableClickEvents = false;
+		PlayerController->bEnableMouseOverEvents = false;
 
 		FRotator Rotation = GetActorRotation() + FRotator(LookDelta.Y, LookDelta.X, 0.0f);
 
@@ -62,11 +78,13 @@ void ACameraLogic::Tick(float DeltaTime)
 			Rotation.Pitch = -45.0f;
 		}
 
-		SetActorLocation(GetActorLocation() + (MoveDirection * DeltaTime * MovementSpeed));
 		SetActorRotation(Rotation);
 	}
 	else
 	{
+		PlayerController->bShowMouseCursor = true;
+		PlayerController->bEnableClickEvents = true;
+		PlayerController->bEnableMouseOverEvents = true;
 	}
 }
 
@@ -84,6 +102,8 @@ void ACameraLogic::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		EnhancedInputComponent->BindAction(MouseLookAction, ETriggerEvent::Completed, this, &ACameraLogic::MouseLook);
 		EnhancedInputComponent->BindAction(CameraVerticalMovementAction, ETriggerEvent::Triggered, this, &ACameraLogic::MouseWheel);
 		EnhancedInputComponent->BindAction(CameraVerticalMovementAction, ETriggerEvent::Completed, this, &ACameraLogic::MouseWheel);
+		EnhancedInputComponent->BindAction(ActivateMouseLookAction, ETriggerEvent::Triggered, this, &ACameraLogic::ActivateMouseLook);
+		EnhancedInputComponent->BindAction(ActivateMouseLookAction, ETriggerEvent::Completed, this, &ACameraLogic::ActivateMouseLook);
 	}
 }
 
@@ -100,4 +120,9 @@ void ACameraLogic::MouseLook(const FInputActionValue& Value)
 void ACameraLogic::MouseWheel(const FInputActionValue& Value)
 {
 	CameraElevation = Value.Get<float>();
+}
+
+void ACameraLogic::ActivateMouseLook(const FInputActionValue& Value)
+{
+	isPanning = Value.Get<bool>();
 }
