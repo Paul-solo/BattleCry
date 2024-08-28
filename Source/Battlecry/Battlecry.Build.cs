@@ -15,6 +15,7 @@ public class Battlecry : ModuleRules
             "InputCore",
             "UMG",
             "EnhancedInput"
+			"AIModule"
         });
 
 		PrivateDependencyModuleNames.AddRange(new string[] {  });
