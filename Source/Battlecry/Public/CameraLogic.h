@@ -36,7 +36,7 @@ public:
 	float MovementSpeed = 750.0f;
 
 	UPROPERTY(EditAnywhere, Category = Camera)
-	float CameraVerticalSpeed = 1000000000.0f;
+	float CameraVerticalSpeed = 1.0f;
 
 	UPROPERTY(EditAnywhere, Category = Camera)
 	UCameraComponent* CameraMain;

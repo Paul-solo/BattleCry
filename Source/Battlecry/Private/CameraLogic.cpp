@@ -47,22 +47,29 @@ void ACameraLogic::Tick(float DeltaTime)
 	const FVector ForwardDirection = GetActorForwardVector() * MovementVector.Y;
 	const FVector RightDirection = GetActorRightVector() * MovementVector.X;
 
-	FVector MoveDirection = FVector(ForwardDirection.X + RightDirection.X, ForwardDirection.Y + RightDirection.Y, CameraElevation * CameraVerticalSpeed);
-	MoveDirection /= MoveDirection.Size();
-
-	const FVector2D LookDelta = LookVector * DeltaTime * MovementSpeed;
+	FVector MoveDirection = FVector(ForwardDirection.X + RightDirection.X, ForwardDirection.Y + RightDirection.Y, 0.0f);
+	
+	// Normalize vector (but avoid dividing by zero vector)
+	if (MoveDirection.IsNearlyZero() == false)
+	{
+		MoveDirection /= MoveDirection.Size();
+	}
 
 	const float MinimumHeight = 100.0f;
 
-	if (GetActorLocation().Z < MinimumHeight)
+	MoveDirection.Z = CameraElevation * CameraVerticalSpeed;
+
+	if (MoveDirection.Z < 0.0f && GetActorLocation().Z + MoveDirection.Z < MinimumHeight)
 	{
-		SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, MinimumHeight));
+		MoveDirection.Z = 0.0f;
 	}
-
+	
 	SetActorLocation(GetActorLocation() + (MoveDirection * DeltaTime * MovementSpeed));
-
+	
 	if (isPanning)
 	{
+		const FVector2D LookDelta = LookVector * DeltaTime * MovementSpeed;
+
 		PlayerController->bShowMouseCursor = false;
 		PlayerController->bEnableClickEvents = false;
 		PlayerController->bEnableMouseOverEvents = false;
