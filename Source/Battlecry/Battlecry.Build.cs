@@ -14,7 +14,7 @@ public class Battlecry : ModuleRules
 			"Engine",
             "InputCore",
             "UMG",
-            "EnhancedInput"
+            "EnhancedInput",
 			"AIModule"
         });
 
