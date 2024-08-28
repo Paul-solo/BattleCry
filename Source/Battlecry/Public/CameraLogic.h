@@ -30,12 +30,13 @@ public:
 	void Move(const FInputActionValue& Value);
 	void MouseLook(const FInputActionValue& Value);
 	void MouseWheel(const FInputActionValue& Value);
+	void ActivateMouseLook(const FInputActionValue& Value);
 
 	UPROPERTY(EditAnywhere, Category = Camera)
 	float MovementSpeed = 750.0f;
 
 	UPROPERTY(EditAnywhere, Category = Camera)
-	float CameraVerticalSpeed = 1000000.0f;
+	float CameraVerticalSpeed = 1.0f;
 
 	UPROPERTY(EditAnywhere, Category = Camera)
 	UCameraComponent* CameraMain;
@@ -59,12 +60,16 @@ public:
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* CameraVerticalMovementAction;
 
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* ActivateMouseLookAction;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 private:
-	bool isPanning = true;
+	APlayerController* PlayerController;
+	bool isPanning = false;
 
 	FVector2D MovementVector = FVector2D();
 	FVector2D LookVector = FVector2D();
