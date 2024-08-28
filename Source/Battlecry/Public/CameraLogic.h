@@ -11,6 +11,8 @@ class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 class UBoxComponent;
+class UDragBox;
+class ABattleCryHUD;
 
 UCLASS()
 class BATTLECRY_API ACameraLogic : public APawn
@@ -31,6 +33,7 @@ public:
 	void MouseLook(const FInputActionValue& Value);
 	void MouseWheel(const FInputActionValue& Value);
 	void ActivateMouseLook(const FInputActionValue& Value);
+	void StartDragBox(const FInputActionValue& Value);
 
 	UPROPERTY(EditAnywhere, Category = Camera)
 	float MovementSpeed = 750.0f;
@@ -63,6 +66,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* ActivateMouseLookAction;
 
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* StartDragBoxAction;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -70,8 +76,15 @@ protected:
 private:
 	APlayerController* PlayerController;
 	bool isPanning = false;
+	bool isDragging = false;
 
 	FVector2D MovementVector = FVector2D();
 	FVector2D LookVector = FVector2D();
 	float CameraElevation = 0.0f;
+
+	ABattleCryHUD* HUD;
+	UDragBox* DragBox;
+
+	float MouseDragInitialX;
+	float MouseDragInitialY;
 };

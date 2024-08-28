@@ -13,6 +13,7 @@ public class Battlecry : ModuleRules
 			"CoreUObject",
 			"Engine",
             "InputCore",
+            "UMG",
             "EnhancedInput"
         });
 

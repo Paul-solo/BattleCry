@@ -6,6 +6,12 @@
 #include <EnhancedInputComponent.h>
 #include <EnhancedInputSubsystems.h>
 #include <Components/BoxComponent.h>
+#include <Components/WidgetComponent.h>
+#include <Kismet/GameplayStatics.h>
+#include <BattleCryHUD.h>
+#include <DragBox.h>
+#include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
+#include "Runtime/Engine/Classes/GameFramework/PlayerController.h"
 
 // Sets default values
 ACameraLogic::ACameraLogic()
@@ -37,6 +43,8 @@ void ACameraLogic::BeginPlay()
 			Subsystem->AddMappingContext(MainCameraInputContext, 0);
 		}
 	}
+
+	HUD = Cast<ABattleCryHUD>(UGameplayStatics::GetPlayerController(this, 0)->GetHUD());
 }
 
 // Called every frame
@@ -92,6 +100,39 @@ void ACameraLogic::Tick(float DeltaTime)
 		PlayerController->bShowMouseCursor = true;
 		PlayerController->bEnableClickEvents = true;
 		PlayerController->bEnableMouseOverEvents = true;
+
+		if (isDragging)
+		{
+			HUD->DragBox->SetVisibility(ESlateVisibility::Visible);
+
+			float mouseX;
+			float mouseY;
+
+			UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(mouseX, mouseY);
+
+			float width  = abs(mouseX - MouseDragInitialX);
+			float height = abs(mouseY - MouseDragInitialY);
+
+			float newposX = MouseDragInitialX;
+			float newposY = MouseDragInitialY;
+
+			if (MouseDragInitialX > mouseX)
+			{
+				newposX = mouseX;
+			}
+
+			if (MouseDragInitialY > mouseY)
+			{
+				newposY = mouseY;
+			}
+
+			HUD->DragBox->SetDragBoxPosition(newposX, newposY);
+			HUD->DragBox->SetDragBoxSize(width, height);
+		}
+		else
+		{
+			HUD->DragBox->SetVisibility(ESlateVisibility::Hidden);
+		}
 	}
 }
 
@@ -111,6 +152,8 @@ void ACameraLogic::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		EnhancedInputComponent->BindAction(CameraVerticalMovementAction, ETriggerEvent::Completed, this, &ACameraLogic::MouseWheel);
 		EnhancedInputComponent->BindAction(ActivateMouseLookAction, ETriggerEvent::Triggered, this, &ACameraLogic::ActivateMouseLook);
 		EnhancedInputComponent->BindAction(ActivateMouseLookAction, ETriggerEvent::Completed, this, &ACameraLogic::ActivateMouseLook);
+		EnhancedInputComponent->BindAction(StartDragBoxAction, ETriggerEvent::Triggered, this, &ACameraLogic::StartDragBox);
+		EnhancedInputComponent->BindAction(StartDragBoxAction, ETriggerEvent::Completed, this, &ACameraLogic::StartDragBox);
 	}
 }
 
@@ -132,4 +175,16 @@ void ACameraLogic::MouseWheel(const FInputActionValue& Value)
 void ACameraLogic::ActivateMouseLook(const FInputActionValue& Value)
 {
 	isPanning = Value.Get<bool>();
+}
+
+void ACameraLogic::StartDragBox(const FInputActionValue& Value)
+{
+	if (isDragging == false)
+	{
+		UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(MouseDragInitialX, MouseDragInitialY);
+
+		HUD->DragBox->SetDragBoxPosition(MouseDragInitialX, MouseDragInitialY);
+	}
+
+	isDragging = Value.Get<bool>();
 }
