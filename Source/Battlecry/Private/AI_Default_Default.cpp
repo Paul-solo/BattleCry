@@ -18,7 +18,7 @@ void AAI_Default_Default::BeginPlay()
 {
 	Super::BeginPlay();
 	ARTSGameMode* GameMode = Cast<ARTSGameMode>(UGameplayStatics::GetGameMode(this));
-	GameMode->EnnemyLeft++;
+	GameMode->DefDefLeft++;
 }
 
 // Called every frame
