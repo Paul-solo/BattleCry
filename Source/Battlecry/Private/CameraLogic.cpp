@@ -71,8 +71,15 @@ void ACameraLogic::Tick(float DeltaTime)
 	{
 		MoveDirection.Z = 0.0f;
 	}
+
+	float CameraMultiplier = 1.0f;
+
+	if (isCameraSpedUp)
+	{
+		CameraMultiplier = 4.0f;
+	}
 	
-	SetActorLocation(GetActorLocation() + (MoveDirection * DeltaTime * MovementSpeed));
+	SetActorLocation(GetActorLocation() + (MoveDirection * DeltaTime * MovementSpeed * CameraMultiplier));
 	
 	if (isPanning)
 	{
@@ -109,6 +116,9 @@ void ACameraLogic::Tick(float DeltaTime)
 			float mouseY;
 
 			UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(mouseX, mouseY);
+
+			const FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
+			float ResolutionRatio = (ViewportSize.X / ViewportSize.Y);
 
 			float width  = abs(mouseX - MouseDragInitialX);
 			float height = abs(mouseY - MouseDragInitialY);
@@ -154,6 +164,8 @@ void ACameraLogic::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		EnhancedInputComponent->BindAction(ActivateMouseLookAction, ETriggerEvent::Completed, this, &ACameraLogic::ActivateMouseLook);
 		EnhancedInputComponent->BindAction(StartDragBoxAction, ETriggerEvent::Triggered, this, &ACameraLogic::StartDragBox);
 		EnhancedInputComponent->BindAction(StartDragBoxAction, ETriggerEvent::Completed, this, &ACameraLogic::StartDragBox);
+		EnhancedInputComponent->BindAction(SpeedUpCameraAction, ETriggerEvent::Triggered, this, &ACameraLogic::SpeedUpCamera);
+		EnhancedInputComponent->BindAction(SpeedUpCameraAction, ETriggerEvent::Completed, this, &ACameraLogic::SpeedUpCamera);
 	}
 }
 
@@ -187,4 +199,9 @@ void ACameraLogic::StartDragBox(const FInputActionValue& Value)
 	}
 
 	isDragging = Value.Get<bool>();
+}
+
+void ACameraLogic::SpeedUpCamera(const FInputActionValue& Value)
+{
+	isCameraSpedUp = Value.Get<bool>();
 }

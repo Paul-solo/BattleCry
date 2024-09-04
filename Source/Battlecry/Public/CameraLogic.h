@@ -34,6 +34,7 @@ public:
 	void MouseWheel(const FInputActionValue& Value);
 	void ActivateMouseLook(const FInputActionValue& Value);
 	void StartDragBox(const FInputActionValue& Value);
+	void SpeedUpCamera(const FInputActionValue& Value);
 
 	UPROPERTY(EditAnywhere, Category = Camera)
 	float MovementSpeed = 750.0f;
@@ -69,6 +70,9 @@ public:
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* StartDragBoxAction;
 
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* SpeedUpCameraAction;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -77,6 +81,7 @@ private:
 	APlayerController* PlayerController;
 	bool isPanning = false;
 	bool isDragging = false;
+	bool isCameraSpedUp = false;
 
 	FVector2D MovementVector = FVector2D();
 	FVector2D LookVector = FVector2D();
