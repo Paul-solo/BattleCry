@@ -12,6 +12,7 @@
 #include <DragBox.h>
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Runtime/Engine/Classes/GameFramework/PlayerController.h"
+#include "Unit.h"
 
 // Sets default values
 ACameraLogic::ACameraLogic()
@@ -25,6 +26,8 @@ ACameraLogic::ACameraLogic()
 
 	CameraMain = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	CameraMain->SetupAttachment(CollisionBox);
+
+	//GotoBanner = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Banner"));
 }
 
 // Called when the game starts or when spawned
@@ -166,6 +169,7 @@ void ACameraLogic::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 		EnhancedInputComponent->BindAction(StartDragBoxAction, ETriggerEvent::Completed, this, &ACameraLogic::StartDragBox);
 		EnhancedInputComponent->BindAction(SpeedUpCameraAction, ETriggerEvent::Triggered, this, &ACameraLogic::SpeedUpCamera);
 		EnhancedInputComponent->BindAction(SpeedUpCameraAction, ETriggerEvent::Completed, this, &ACameraLogic::SpeedUpCamera);
+		EnhancedInputComponent->BindAction(MoveUnitAction, ETriggerEvent::Triggered, this, &ACameraLogic::SendMoveUnitCommand);
 	}
 }
 
@@ -204,4 +208,22 @@ void ACameraLogic::StartDragBox(const FInputActionValue& Value)
 void ACameraLogic::SpeedUpCamera(const FInputActionValue& Value)
 {
 	isCameraSpedUp = Value.Get<bool>();
+}
+
+void ACameraLogic::SendMoveUnitCommand(const FInputActionValue& Value)
+{
+	TArray<AActor*> FoundActors;
+	TSubclassOf<AUnit> ClassToFind = AUnit::StaticClass();
+	UGameplayStatics::GetAllActorsOfClass(GetWorld(), ClassToFind, FoundActors);
+
+	FHitResult HitResult;
+
+	UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHitResultUnderCursor(ECC_Visibility, false, HitResult);
+
+	//GotoBanner->SetRelativeLocation(Location);
+
+	for (int i = 0; i < FoundActors.Num(); i++)
+	{
+		Cast<AUnit>(FoundActors[i])->MoveToLocation(HitResult.Location);
+	}
 }

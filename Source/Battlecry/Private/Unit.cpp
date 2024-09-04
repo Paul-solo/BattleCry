@@ -2,6 +2,7 @@
 
 
 #include "Unit.h"
+#include "AIController.h"
 
 // Sets default values
 AUnit::AUnit()
@@ -11,11 +12,45 @@ AUnit::AUnit()
 
 }
 
+void AUnit::MoveToLocation(FVector Location)
+{
+	// Check if there are waypoints to travel between and if the waypoint still exists (It might have been destroyed)
+	AAIController* AIController = Cast<AAIController>(GetController());
+
+	/*if (AIController == nullptr || Waypoints.Num() == 0 || Waypoints[CurrentWaypointIndex] == nullptr)
+	{
+		return;
+	}*/
+
+	// Choose next waypoint
+	FVector CurrentLocation = GetActorLocation();  // get the currect actor location 
+	FVector TargetLocation = Location;
+
+	// When we get close to the targe, then change to the next way point 
+	float MinimumWaypointDistance = 200.0f;
+
+	if (FVector::Dist(TargetLocation, CurrentLocation) < MinimumWaypointDistance)
+	{
+		ActionState = ActionStates::ON_PATROL;
+		/*CurrentWaypointIndex++;
+
+		if (CurrentWaypointIndex >= Waypoints.Num())
+		{
+			CurrentWaypointIndex = 0;
+		}*/
+	}
+	else
+	{
+		AIController->MoveToLocation(TargetLocation);
+		ActionState = ActionStates::WAITING;
+	}
+}
+
 // Called when the game starts or when spawned
 void AUnit::BeginPlay()
 {
 	Super::BeginPlay();
-	
+
 }
 
 // Called every frame

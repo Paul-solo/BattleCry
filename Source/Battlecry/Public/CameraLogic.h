@@ -35,6 +35,7 @@ public:
 	void ActivateMouseLook(const FInputActionValue& Value);
 	void StartDragBox(const FInputActionValue& Value);
 	void SpeedUpCamera(const FInputActionValue& Value);
+	void SendMoveUnitCommand(const FInputActionValue& Value);
 
 	UPROPERTY(EditAnywhere, Category = Camera)
 	float MovementSpeed = 750.0f;
@@ -72,6 +73,12 @@ public:
 
 	UPROPERTY(EditAnywhere, Category = Input)
 	UInputAction* SpeedUpCameraAction;
+
+	UPROPERTY(EditAnywhere, Category = Input)
+	UInputAction* MoveUnitAction;
+
+	//UPROPERTY(EditAnywhere, Category = Banners)
+	//UStaticMeshComponent* GotoBanner;
 
 protected:
 	// Called when the game starts or when spawned

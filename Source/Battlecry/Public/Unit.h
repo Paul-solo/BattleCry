@@ -17,15 +17,33 @@ public:
 
 	bool isSelected = false;
 
-protected:
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
+	enum States
+	{
+		LYING_DOWN,
+		CROUCHING,
+		STANDING,
+		FRENZYING,
+		SURRENDERING
+	};
 
-public:	
+	enum ActionStates
+	{
+		WAITING,
+		ATTACKING,
+		ON_PATROL
+	};
+
+	int State = States::STANDING;
+	int ActionState = ActionStates::WAITING;
+
+	void MoveToLocation(FVector Location);
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
 };
