@@ -13,6 +13,8 @@ void UDragBox::SetDragBoxSize(float width, float height)
 {
 	if (DragBox)
 	{
-		DragBox->SetDesiredSizeScale(FVector2D(width, height));
+		DragBox->SetDesiredSizeScale(FVector2D(width, height)/2);
 	}
+
+	SetDesiredSizeInViewport(FVector2D(width, height));
 }
