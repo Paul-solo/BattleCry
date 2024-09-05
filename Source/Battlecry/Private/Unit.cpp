@@ -9,7 +9,9 @@ AUnit::AUnit()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
+	
+	SelectedPlane = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Selected Plane"));
+	SelectedPlane->SetupAttachment(GetRootComponent());
 }
 
 void AUnit::MoveToLocation(FVector Location)
@@ -58,6 +60,16 @@ void AUnit::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	SelectedPlane->SetWorldRotation(SelectedPlane->GetComponentRotation() + (FRotator(0.0f, SelectedPlaneSpeed, 0.0f) * DeltaTime));
+
+	if (isSelected)
+	{
+		SelectedPlane->SetVisibility(true);
+	}
+	else
+	{
+		SelectedPlane->SetVisibility(false);
+	}
 }
 
 // Called to bind functionality to input
