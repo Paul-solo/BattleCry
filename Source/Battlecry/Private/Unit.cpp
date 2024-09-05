@@ -26,7 +26,7 @@ void AUnit::MoveToLocation(FVector Location)
 
 	// Choose next waypoint
 	FVector CurrentLocation = GetActorLocation();  // get the currect actor location 
-	FVector TargetLocation = Location;
+	FVector TargetLocation  = Location;
 
 	// When we get close to the targe, then change to the next way point 
 	float MinimumWaypointDistance = 200.0f;
