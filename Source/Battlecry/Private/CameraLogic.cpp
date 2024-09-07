@@ -138,8 +138,8 @@ void ACameraLogic::Tick(float DeltaTime)
 			// the fuction returns a float, so we can return the value out of our function here
 			float scale = GetDefault<UUserInterfaceSettings>(UUserInterfaceSettings::StaticClass())->GetDPIScaleBasedOnSize(FIntPoint(X, Y));
 
-			float width  = abs(mouseX - MouseDragInitialX) / (scale);
-			float height = abs(mouseY - MouseDragInitialY) / (scale);
+			float width  = abs(mouseX - MouseDragInitialX) / scale;
+			float height = abs(mouseY - MouseDragInitialY) / scale;
 
 			float newposX = MouseDragInitialX;
 			float newposY = MouseDragInitialY;
@@ -215,6 +215,21 @@ void ACameraLogic::StartDragBox(const FInputActionValue& Value)
 		UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(MouseDragInitialX, MouseDragInitialY);
 
 		HUD->DragBox->SetDragBoxPosition(MouseDragInitialX, MouseDragInitialY);
+	}
+	else
+	{
+		TArray<AActor*> FoundActors;
+		TSubclassOf<AUnit> ClassToFind = AUnit::StaticClass();
+		UGameplayStatics::GetAllActorsOfClass(GetWorld(), ClassToFind, FoundActors);
+
+		FHitResult HitResult;
+
+		UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetHitResultUnderCursor(ECC_Visibility, false, HitResult);
+
+		for (int i = 0; i < FoundActors.Num(); i++)
+		{
+			Cast<AUnit>(FoundActors[i])->isSelected = true;
+		}
 	}
 
 	isDragging = Value.Get<bool>();
