@@ -222,8 +222,15 @@ void ACameraLogic::SendMoveUnitCommand(const FInputActionValue& Value)
 
 	//GotoBanner->SetRelativeLocation(Location);
 
+	float x = 0.0f;
+
 	for (int i = 0; i < FoundActors.Num(); i++)
 	{
-		Cast<AUnit>(FoundActors[i])->MoveToLocation(HitResult.Location);
+		/*if (i % 5 == 0)
+		{
+			x += 25.0f;
+		}*/
+
+		Cast<AUnit>(FoundActors[i])->MoveToLocation(HitResult.Location + (FVector(x, 30.0f, 0.0f) * i));
 	}
 }

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AIData.h"
 #include "GameFramework/Character.h"
 #include "Unit.generated.h"
 
@@ -16,22 +17,6 @@ public:
 	AUnit();
 
 	bool isSelected = false;
-
-	enum States
-	{
-		LYING_DOWN,
-		CROUCHING,
-		STANDING,
-		FRENZYING,
-		SURRENDERING
-	};
-
-	enum ActionStates
-	{
-		WAITING,
-		ATTACKING,
-		ON_PATROL
-	};
 
 	int State = States::STANDING;
 	int ActionState = ActionStates::WAITING;
