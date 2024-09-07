@@ -1,7 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "BattleCryHUD.h"
+#include "UI/BattleCryHUD.h"
 #include "DragBox.h"
 
 void ABattleCryHUD::BeginPlay()

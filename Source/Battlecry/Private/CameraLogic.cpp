@@ -8,10 +8,12 @@
 #include <Components/BoxComponent.h>
 #include <Components/WidgetComponent.h>
 #include <Kismet/GameplayStatics.h>
-#include <BattleCryHUD.h>
 #include <DragBox.h>
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "Runtime/Engine/Classes/GameFramework/PlayerController.h"
+#include "Runtime/Engine/Classes/Engine/UserInterfaceSettings.h"
+#include "Runtime/Engine/Classes/Engine/RendererSettings.h"
+#include "UI/BattleCryHUD.h"
 #include "Unit.h"
 
 // Sets default values
@@ -120,15 +122,28 @@ void ACameraLogic::Tick(float DeltaTime)
 
 			UGameplayStatics::GetPlayerController(GetWorld(), 0)->GetMousePosition(mouseX, mouseY);
 
-			const FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
-			float ResolutionRatio = (ViewportSize.X / ViewportSize.Y);
+			//const FVector2D ViewportSize = FVector2D(GEngine->GameViewport->Viewport->GetSizeXY());
+			//const float viewportScale = GetDefault<UUserInterfaceSettings>(UUserInterfaceSettings::StaticClass())->GetDPIScaleBasedOnSize(FIntPoint(ViewportSize.X, ViewportSize.Y));
 
-			float width  = abs(mouseX - MouseDragInitialX);
-			float height = abs(mouseY - MouseDragInitialY);
+			// need a variable here to pass to the GetViewportSize function
+			FVector2D viewportSize;
+			// as this function returns through the parameter, we just need to call it by passing in our FVector2D variable
+			GEngine->GameViewport->GetViewportSize(viewportSize);
+
+			// we need to floor the float values of the viewport size so we can pass those into the GetDPIScaleBasedOnSize function
+			int32 X = FGenericPlatformMath::FloorToInt(viewportSize.X);
+			int32 Y = FGenericPlatformMath::FloorToInt(viewportSize.Y);
+
+			// the GetDPIScaleBasedOnSize function takes an FIntPoint, so we construct one out of the floored floats of the viewport
+			// the fuction returns a float, so we can return the value out of our function here
+			float scale = GetDefault<UUserInterfaceSettings>(UUserInterfaceSettings::StaticClass())->GetDPIScaleBasedOnSize(FIntPoint(X, Y));
+
+			float width  = abs(mouseX - MouseDragInitialX) / (scale);
+			float height = abs(mouseY - MouseDragInitialY) / (scale);
 
 			float newposX = MouseDragInitialX;
 			float newposY = MouseDragInitialY;
-
+			
 			if (MouseDragInitialX > mouseX)
 			{
 				newposX = mouseX;
